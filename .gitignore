@@ -1,0 +1,12 @@
+node_modules/
+.env.local
+.demo-accounts.json
+.suffix
+demo-output.txt
+web/dist/
+*.log
+web/public/dev-session.json
+build/*
+!build/susuchain.wasm
+!build/test_usdc.wasm
+.env.testnet
