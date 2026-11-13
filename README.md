@@ -13,6 +13,7 @@ Circles work with **native NEAR or any NEP-141 token** (for example USDC). The t
 | | |
 |---|---|
 | Live app (testnet) | https://sainath998.github.io/susuchain-near/ |
+| Demo video (3 min, captioned) | [docs/demo.mp4](docs/demo.mp4) |
 | Contract | [`susuchain.testnet`](https://testnet.nearblocks.io/address/susuchain.testnet) |
 | Test stablecoin | [`tusdc-d0wm.testnet`](https://testnet.nearblocks.io/address/tusdc-d0wm.testnet) (NEP-141, 6 decimals, `faucet` method) |
 | Hackathon tracks | Real-World Money (`realworld`), Social Money (`social`), Open Innovation (`open`) |
