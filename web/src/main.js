@@ -7,7 +7,7 @@ import {
 const $ = (s, el = document) => el.querySelector(s);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
-const state = { circles: [], filter: "all", me: null, busy: new Set(), loaded: false, highlight: null };
+const state = { circles: [], filter: "all", me: null, busy: new Set(), loaded: false, highlight: null, openHistory: new Set() };
 const params = new URLSearchParams(location.search);
 if (params.has("circle")) state.highlight = Number(params.get("circle"));
 
@@ -259,7 +259,7 @@ function circleCard(c) {
   if (c.status !== "completed") acts.push(`<button class="ghost small" data-action="share" data-id="${c.id}">Invite link</button>`);
 
   const hist = c.payouts.length || (c.defaults || []).length
-    ? `<details class="history"><summary>History (${c.payouts.length} payout${c.payouts.length === 1 ? "" : "s"})</summary><ol>${c.payouts.map((p) =>
+    ? `<details class="history" data-hist="${c.id}" ${state.openHistory.has(c.id) ? "open" : ""}><summary>History (${c.payouts.length} payout${c.payouts.length === 1 ? "" : "s"})</summary><ol>${c.payouts.map((p) =>
       `<li>Round ${p.round}: ${money(p.amount, c.asset)} to ${esc(short(p.to))}${p.covered_by_collateral.length ? ` · ${p.covered_by_collateral.map(short).map(esc).join(", ")} covered by collateral` : ""}${p.shortfall !== "0" ? ` · short ${money(p.shortfall, c.asset)}` : ""}</li>`).join("")}</ol></details>`
     : "";
 
@@ -377,6 +377,14 @@ function setFilter(f) {
 }
 document.querySelectorAll(".filters button").forEach((b) => b.addEventListener("click", () => setFilter(b.dataset.filter)));
 
+// Remember which History panels are open across re-renders.
+document.addEventListener("toggle", (e) => {
+  const d = e.target;
+  if (!(d instanceof HTMLDetailsElement) || !d.dataset.hist) return;
+  const id = Number(d.dataset.hist);
+  if (d.open) state.openHistory.add(id); else state.openHistory.delete(id);
+}, true);
+
 $("#createForm").addEventListener("change", renderCreateHint);
 $("#createForm").addEventListener("submit", (e) => {
   e.preventDefault();
@@ -411,3 +419,15 @@ onSession(() => refresh());
 restoreSession();
 refresh();
 setInterval(refresh, 12000);
+
+// Optional caption bar for recorded walkthroughs: open the app with ?captions
+// and call window.susuCaption("text"). Has no effect otherwise.
+if (params.has("captions")) {
+  const bar = document.createElement("div");
+  bar.className = "caption-bar";
+  document.body.appendChild(bar);
+  window.susuCaption = (text) => {
+    bar.textContent = text || "";
+    bar.classList.toggle("show", Boolean(text));
+  };
+}

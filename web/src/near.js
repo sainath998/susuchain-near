@@ -213,7 +213,7 @@ export function neighbourSession(n) {
 
 export async function addNeighbours(count, perNeighbourNear) {
   if (session?.kind !== "local") throw new Error("Simulated neighbours need a one-click testnet account");
-  const names = ["amara", "kofi", "lucia", "priya", "tomas", "wanjiru", "nia", "mateo", "esi", "ravi", "sofia"];
+  const names = ["kofi", "lucia", "priya", "tomas", "wanjiru", "nia", "mateo", "esi", "ravi", "sofia", "kwame"];
   const list = store.get("susu.neighbours") || [];
   const out = [];
   for (let i = 0; i < count; i++) {

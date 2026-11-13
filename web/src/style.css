@@ -172,3 +172,6 @@ main { max-width: 1120px; margin: 0 auto; padding: 24px 16px 64px; }
   .create { grid-template-columns: 1fr; }
   .create button { justify-self: stretch; }
 }
+
+.caption-bar { position: fixed; left: 50%; top: 72px; transform: translateX(-50%); z-index: 30; max-width: min(860px, calc(100vw - 32px)); background: rgba(16, 24, 20, 0.92); color: #fff; font: 600 19px/1.4 Inter, sans-serif; padding: 12px 20px; border-radius: 12px; text-align: center; opacity: 0; transition: opacity 0.25s ease; pointer-events: none; }
+.caption-bar.show { opacity: 1; }
